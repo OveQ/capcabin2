@@ -2,7 +2,7 @@
 ----------
 
 ## Intro
-Current Rest api provides basic set CRUD operations to the dynamically generated JSON-server database. The server is running on port: `9200` and supports relevant HTTP methods e.g `POST, GET, PUT, DELETE`
+Current Rest API provides basic set CRUD operations to the dynamically generated JSON-server database. The server is running on port: `9200` and supports relevant HTTP methods e.g `POST, GET, PUT, DELETE`
 </br>
 </br>
 ## Endpoints:
@@ -25,10 +25,10 @@ RESERVATIONS: http://localhost:9200/reservations
 ## EXAMPLES:
 </br>
 
-#### Fething data (HTTP GET CALLS)
+### Fething data (HTTP GET CALLS)
 </br>
 
-1. To get a list of `users, cains` or `reservations` simply execute an HTTP `GET` request to any of the endpoints:
+- To get a list of `users`, `cains` or `reservations` simply execute an HTTP `GET` request to the appropriate endpoint:
 ```
 Request -> GET: http://localhost:9200/users
 ----------
@@ -36,25 +36,25 @@ Request -> GET: http://localhost:9200/users
 Response <-: Array of users
 [
   {
-    "uid": 210,
+    "id": 210,
     "firstName": "Anette",
     "lastName": "Normann",
     "role": "admin"
   },
   {
-    "uid": 211,
+    "id": 211,
     "firstName": "Ola",
     "lastName": "Normann",
     "role": "admin"
   },
   {
-    "uid": 200,
+    "id": 200,
     "firstName": "Jonas",
     "lastName": "Johannes",
     "role": "user"
   },
   {
-    "uid": 201,
+    "id": 201,
     "firstName": "Siri",
     "lastName": "Stormberg",
     "role": "user"
@@ -66,46 +66,165 @@ Response <-: Array of users
 ```
 </br>
 
-2. To get data about specific user or cabin, execute `GET` request with an object specific *id* provided as a url query string, a such as `http://localhost:9200/users?uid=200` will return data of a user with `uid:` 200.
-
-#### NOTE:
-- `User` object uses field name `uid` as ID
-- `Cabin` object uses field name `cid` as ID
+- To get data about specific `user`, `cabin` or `reservation`, execute HTTP `GET` request to the appropriate endpoint with an object specific **id** provided at the end of the url, a such as `http://localhost:9200/users/200` will return data of a user with `id:` 200.
 </br>
 
+Get specific user data:
 ```
-Request -> GET: http://localhost:9200/users?uid=200
+Request -> GET: http://localhost:9200/users/200
 ----------
 
-Response <-: Array of users matching provided UID
-[
-  {
-    "uid": 200,
-    "firstName": "Jonas",
-    "lastName": "Johannes",
-    "role": "user"
-  }
-]
-```
-or in the case of cabins the request might look like:
-```
-Request -> GET: http://localhost:9200/cabins?cid=110
-----------
-
-Response <-: Array of cabins matching provided CID
-[
-  {
-    "cid": 110,
-    "name": "Ulvik Resort",
-    "address": "Havnegata 41, 7500 Stjørdal",
-    "description": "Ulvik Resort is 1 km from Stjørdal, the island's main area, and offers air-conditioned accommodation. Free WiFi access is available. The nearest kebab place is 1.5 km away.",
-    "imageUrl": "https://source.unsplash.com/320x240/?villa,hotel,house,vacation",
-    "googleMapsUrl": "https://www.google.com/maps/@63.3563844,9.6467183,17z",
-    "rank": 5,
-    "price": "3800 NOK"
-  }
-]
+Response <-:  A User object matching provided ID
+{
+  "id": 200,
+  "firstName": "Jonas",
+  "lastName": "Johannes",
+  "role": "user"
+}
 ```
 </br>
 
-#### Updating data (HTTP PUT CALLS)
+Get specific cabin data:
+```
+
+Request -> GET: http://localhost:9200/cabins/110
+----------
+
+Response <-: A Cabin object matching provided ID
+{
+  "id": 110,
+  "name": "Ulvik Resort",
+  "address": "Havnegata 41, 7500 Stjørdal",
+  "description": "Ulvik Resort is 1 km from Stjørdal, the island's main area, and offers air-conditioned accommodation. Free WiFi access is available. The nearest kebab place is 1.5 km away.",
+  "imageUrl": "https://source.unsplash.com/320x240/?villa,hotel,house,vacation",
+  "googleMapsUrl": "https://www.google.com/maps/@63.3563844,9.6467183,17z",
+  "rank": 5,
+  "price": "3800 NOK"
+}
+```
+</br>
+
+Get specific Reservation data:
+```
+Request -> GET: http://localhost:9200/reservations/3036
+----------
+
+Response <-: A Reservation object matching provided ID
+{
+  "id": 3036,
+  "cid": 103,
+  "uid": 203,
+  "from": "19/10/2020",
+  "to": "09/11/2020"
+}
+```
+</br>
+
+### Updating data (HTTP PUT CALLS)
+- To update specific  `user`, `cabin` or `reservation`, execute HTTP `PUT` request to the appropriate endpoint with an object specific **id** provided at the end of the url, such as `http://localhost:9200/users/205`, and data object provided in the body of the request:
+
+```
+HTTP PUT
+
+CABINS:       http://localhost:9200/cabins/{id}
+USERS:        http://localhost:9200/users/{id}
+RESERVATIONS: http://localhost:9200/reservations/{id}
+```
+
+User before update:
+```
+{
+  "id": 210,
+  "firstName": "Anette",
+  "lastName": "Normann",
+  "role": "admin"
+}
+```
+```
+Request -> PUT: http://localhost:9200/users/210
+Body: 
+{
+  "firstName": "Leeroy",
+  "lastName": "Jenkins",
+  "role": "user"
+}
+----------
+
+Response <-: Updated user
+{
+  "id": 210,
+  "firstName": "Leeroy",
+  "lastName": "Jenkins",
+  "role": "user"
+}
+```
+</br>
+
+### Creating new data (HTTP POST CALLS)
+- To push new object to the `user`, `cabin` or `reservation` database, execute HTTP `POST` request to the appropriate endpoint with the respective object provided as a HTTP request body.
+
+```
+HTTP POST
+
+- CABINS:       http://localhost:9200/cabins
+  body: 
+  {
+    "name": string,
+    "address": string,
+    "description": string,
+    "imageUrl": string,
+    "googleMapsUrl": string,
+    "rank": number,
+    "price": string
+  }
+
+- USERS:        http://localhost:9200/users
+  body:
+  {
+    "firstName": string,
+    "lastName": string,
+    "role": string<"user" | "admin">
+  }
+
+- RESERVATIONS: http://localhost:9200/reservations
+  body:
+  {
+    "cid": number,  // cabin id
+    "uid": number,  // user id
+    "from": string, // DD/MM/YYYY
+    "to": string    // DD/MM/YYYY
+  }
+```
+
+Creating a new user:
+```
+Request -> POST: http://localhost:9200/user
+Body: 
+{
+  "firstName": "Betty",
+  "lastName": "Blue",
+  "role": "admin"
+}
+----------
+
+Response <-: Created user
+{
+    "id": 212,
+    "firstName": "Betty",
+    "lastName": "Blue",
+    "role": "admin",
+}
+```
+</br>
+
+### Creating new data (HTTP POST CALLS)
+- To delete `user`, `cabin` or `reservation` from the database, execute HTTP `DELETE` request to the appropriate endpoint with an object specific **id** provided at the end of the url, such as `http://localhost:9200/cabins/107`.
+
+Deletin a cabin:
+```
+Request -> POST: http://localhost:9200/cabin/107
+----------
+
+Response <-: Empty object
+```
+
