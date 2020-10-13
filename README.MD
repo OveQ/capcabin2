@@ -5,8 +5,15 @@
 Current Rest API provides basic set CRUD operations to the dynamically generated JSON-server database. The server is running on port: `9200` and supports relevant HTTP methods e.g `POST, GET, PUT, DELETE`
 </br>
 </br>
+To start the server:
+  1. Clone the repo & make sure you have latest NodeJS installed
+  2. Navigate to the capcabin2 folder via your favourite CLI
+  3. Run `npm i` command to install dependencies
+  4. Run `npm start` to start the JSON server
+</br>
+</br>
 ## Endpoints:
-Following endpoints are available:
+JSON server exposes following endpoints on the port **9200**:
 
 ```
 CABINS:       http://localhost:9200/cabins
