@@ -1,0 +1,16 @@
+{
+  "name": "capcabin2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "generate:data": "node index.js",    
+    "db:server": "json-server --port=9200 --watch db.json",
+    "start": "npm run generate:data && npm run db:server"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "json-server": "^0.16.2"
+  }
+}
