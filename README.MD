@@ -217,10 +217,18 @@ Response <-: Created user
 ```
 </br>
 
-### Creating new data (HTTP POST CALLS)
+### DELETING new data (HTTP DELETE CALLS)
 - To delete `user`, `cabin` or `reservation` from the database, execute HTTP `DELETE` request to the appropriate endpoint with an object specific **id** provided at the end of the url, such as `http://localhost:9200/cabins/107`.
 
-Deletin a cabin:
+```
+HTTP DELETE
+
+CABINS:       http://localhost:9200/cabins/{id}
+USERS:        http://localhost:9200/users/{id}
+RESERVATIONS: http://localhost:9200/reservations/{id}
+```
+
+Deleting a cabin:
 ```
 Request -> POST: http://localhost:9200/cabin/107
 ----------
